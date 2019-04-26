@@ -140,7 +140,7 @@ enum byteNumList {
  */
 //% weight=10 color=#008B00 icon="\uf143" block="NFC"
 namespace NFC {
-    let nfcCallBack: Action;
+    let nfcCallBack: Action=null;
     let reclen = 0;
     let recBuf = pins.createBuffer(25);
     let uid = pins.createBuffer(4);
@@ -228,10 +228,9 @@ namespace NFC {
         return false;
     }
 
-    //%  weight=60
-    //% block = "getCard"
+    //% weight=60
+    //% block="Detected card?"
     //% blockId=get_NFC_card
-    //% icon="\uf143" blockGap=8
     export function getCard(): boolean {
         nfcSetRxBufferSize(100);
         wakeup();
@@ -297,10 +296,9 @@ namespace NFC {
         }
         return ret;
     }
-    //%  weight=60
-    //% block = "getUID"
+    //% weight=60
+    //% block="Read NFC sensor UID data"
     //% blockId=get_UID
-    //% blockGap=8
     export function getUID(): string {
         nfcSetRxBufferSize(100);
         wakeup();
@@ -328,8 +326,8 @@ namespace NFC {
         }
     }
 
-    //% weight=60
-    //% block="checkUID|%str="fb7c60b3"|?"
+    //% weight=80
+    //% block="Did you detect the card UID|%str|?"
     //% blockId=check_UID
     export function checkUID(str: string): boolean {
         if (getUID() == str)
@@ -339,7 +337,7 @@ namespace NFC {
 
 
     //% weight=49
-    //% blockId=block_nfc_list block="%blockNum|(blockNum)"
+    //% blockId=block_nfc_list block="%blockNum|(data block)"
     export function blockList(blockNum?: DataBlockList): number {
         return blockNum;
     }
@@ -354,10 +352,8 @@ namespace NFC {
 
     }
 
-    /*当检测到卡片时*/
-    //% weight=63 
-    //% blockGap=50
-    //% blockId=nfc_event block="当NFC检测到卡片时 读入UID值"
+    //% weight=90
+    //% blockId=nfc_event block="When a card is detected."
     export function nfcEvent(a: Action) {
         nfcCallBack = a;
     }
@@ -383,12 +379,14 @@ namespace NFC {
         serial.readBuffer(reclen);
     }
 
-    /*NFC数据写入*/
-    //% weight = 73
+    //% weight=90
     //% blockId=write_nfc_data 
     //% data.min=0 data.max=255
-    //% block="|%blockNum = block_nfc_list | %byteNum = data_nfc_list |dataWrite %writeIn"
+    //% block="NFC sensor data block :in|%blockNum=block_nfc_list| the %byteNum=data_nfc_list|byte write%writeIn"
     export function writeData(blockNum: number, index: number, data: number): void {
+        if (((blockNum + 1) % 3 == 0) || (blockNum > 63) || (blockNum < 63)){
+            return;
+        }
         if (data > 255)
             data = 255;
         if (data < 0)
@@ -397,10 +395,9 @@ namespace NFC {
         blockdata[index - 1] = data;
         writeblock(blockNum, blockdata);
     }
-    //readNFCData(num)|%num=block_nfc_list
-    
-    //% weight=79
-    //% blockId=read_nfc_data block="读取NFC传感器数据块 |%num=block_nfc_list | 所有数据"
+
+    //% weight=60
+    //% blockId=read_nfc_data block="Read NFC sensor data block:|%num=block_nfc_list|all data"
     export function readNFCData(num: number): string {
         if (!passWordCheck(num, uid, password))
             return "read error!"
@@ -431,8 +428,8 @@ namespace NFC {
         return "read error";
     }
 
-    //% weight=79
-    //% blockId=read_nfc_data_one block="readNFCData|%blockNum=block_nfc_list|%byteNum=data_nfc_list"
+    //% weight=60
+    //% blockId=read_nfc_data_one block="Read NFC sensor data block:|%blockNum=block_nfc_list|in%byteNum=data_nfc_list"
     export function readNFCDataOne(blockNum: number, byteNum: number): number {
         let ret = 0;
         readNFCData(blockNum);
@@ -442,9 +439,11 @@ namespace NFC {
 
 
     basic.forever(() => {
-        if (getCard()) {
-            nfcCallBack();
+        if(nfcCallBack != null){
+            if (getCard()) {
+                nfcCallBack();
+            }
+            basic.pause(100);
         }
-        basic.pause(100);
     })
 } 
