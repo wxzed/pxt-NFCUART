@@ -50,5 +50,5 @@ MIT
 * for PXT/microbit
 (The metadata above is needed for package search.)
 ```package
-Obloq=github:DFRobot/pxt-Obloq
+NFC=github:wxzed/pxt-NFCUART
 ```
