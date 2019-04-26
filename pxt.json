@@ -1,5 +1,5 @@
 {
-    "name": "NFC_UART",
+    "name": "NFC",
     "version": "1.0.3",
     "description": "Add Wi-Fi connectivity to micro:bit and start your IoT project in 5 minutes!",
     "license": "MIT",
@@ -9,10 +9,10 @@
     },
     "files": [
         "README.md",
-        "NFC_UART.ts",
-        "NFC_UART.cpp",
-        "_locales/zh-cn/NFC_UART-strings.json",
-        "_locales/zh-tw/NFC_UART-strings.json"
+        "NFC.ts",
+        "NFC.cpp",
+        "_locales/zh-cn/NFC-strings.json",
+        "_locales/zh-tw/NFC-strings.json"
     ],
     "testFiles": [],
     "public": true,
