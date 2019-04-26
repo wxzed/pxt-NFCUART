@@ -1,9 +1,9 @@
 #include "pxt.h"
 using namespace pxt;
-namespace Obloq {
+namespace NFC_UART {
 
     //%
-    void obloqSetTxBufferSize(int size){
+    void nfcSetTxBufferSize(int size){
         if(size > 100) {
             size = 100;
         }
@@ -11,7 +11,7 @@ namespace Obloq {
     }
 
     //%
-    void obloqSetRxBufferSize(int size){
+    void nfcSetRxBufferSize(int size){
         if(size > 100) {
             size = 100;
         }
@@ -19,44 +19,17 @@ namespace Obloq {
     }
 
     //%
-    int obloqRxBufferedSize(){
+    int nfcRxBufferedSize(){
         return uBit.serial.rxBufferedSize();
     }
 
     //%
-    void obloqEventOn(){
-        uBit.serial.eventOn(ManagedString('\r'), MicroBitSerialMode::ASYNC);
-    }
-
-    //%
-    void obloqClearRxBuffer(){
+    void nfcClearRxBuffer(){
         uBit.serial.clearRxBuffer();
     }
 
     //%
-    void obloqClearTxBuffer(){
+    void nfcClearTxBuffer(){
         uBit.serial.clearTxBuffer();
     }
-
-    //%    
-    void forever_stubs(void *a) {
-        runAction0((Action)a);
-    }
-
-    //%
-    void obloqforevers(Action a) {
-      if (a != 0) {
-        incr(a);
-        create_fiber(forever_stubs, (void*)a);
-      }
-    }
-
-    //%
-    void obloqWriteString(StringData *text) {
-      if (!text) {
-          return;
-      }
-      uBit.serial.send(ManagedString(text));
-    }
-
 }

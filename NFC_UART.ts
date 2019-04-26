@@ -1,14 +1,4 @@
-//data type
-const OBLOQ_STR_TYPE_IS_NONE = ""
-const OBLOQ_BOOL_TYPE_IS_TRUE = true
-const OBLOQ_BOOL_TYPE_IS_FALSE = false
-//topics name
-enum TOPIC {
-    topic_1 = 1,
-    topic_2 = 2,
-    topic_3 = 3,
-    topic_4 = 4
-}
+
 
 /*数据块下拉框*/
 enum DataBlockList {
@@ -149,47 +139,8 @@ enum byteNumList {
  *Obloq implementation method.
  */
 //% weight=10 color=#008B00 icon="\uf143" block="NFC"
-namespace Obloq {
-
-    //serial
-    let OBLOQ_SERIAL_INIT = OBLOQ_BOOL_TYPE_IS_FALSE
-    let OBLOQ_SERIAL_TX = SerialPin.P2
-    let OBLOQ_SERIAL_RX = SerialPin.P1
-    //wifi
-    let OBLOQ_WIFI_SSID = OBLOQ_STR_TYPE_IS_NONE
-    let OBLOQ_WIFI_PASSWORD = OBLOQ_STR_TYPE_IS_NONE
-    let OBLOQ_WIFI_IP = "0.0.0.0"
-    //mqtt
-    let OBLOQ_MQTT_PORT = 0
-    let OBLOQ_MQTT_SERVER = OBLOQ_STR_TYPE_IS_NONE
-    let OBLOQ_MQTT_PWD = OBLOQ_STR_TYPE_IS_NONE
-    let OBLOQ_MQTT_ID = OBLOQ_STR_TYPE_IS_NONE
-    let OBLOQ_MQTT_TOPIC = [["x", "false"], ["x", "false"], ["x", "false"], ["x", "false"], ["x", "false"]]
-    //http
-    let OBLOQ_HTTP_IP = OBLOQ_STR_TYPE_IS_NONE
-    let OBLOQ_HTTP_PORT = 8080
-    let OBLOQ_HTTP_BUSY = OBLOQ_BOOL_TYPE_IS_FALSE
-    //state
-    let OBLOQ_WIFI_CONNECTED = OBLOQ_BOOL_TYPE_IS_FALSE
-    let OBLOQ_WIFI_CONNECT_FIRST = OBLOQ_BOOL_TYPE_IS_TRUE
-    let OBLOQ_MQTT_INIT = OBLOQ_BOOL_TYPE_IS_FALSE
-    let OBLOQ_HTTP_INIT = OBLOQ_BOOL_TYPE_IS_FALSE
-    //callback
-    let OBLOQ_MQTT_CB: Action[] = [null, null, null, null, null]
-    //commands
-    let OBLOQ_ANSWER_CMD = OBLOQ_STR_TYPE_IS_NONE
-    let OBLOQ_ANSWER_CONTENT = OBLOQ_STR_TYPE_IS_NONE
-    let OBLOQ_WRONG_TYPE = OBLOQ_STR_TYPE_IS_NONE
-    //animation
-    let OBLOQ_WIFI_ICON = 1
-    let OBLOQ_MQTT_ICON = 1
-    //event
-    let OBLOQ_MQTT_EVENT = OBLOQ_BOOL_TYPE_IS_FALSE
-    //mode
-    let OBLOQ_WORKING_MODE_IS_MQTT = OBLOQ_BOOL_TYPE_IS_FALSE
-    let OBLOQ_WORKING_MODE_IS_HTTP = OBLOQ_BOOL_TYPE_IS_FALSE
-    let OBLOQ_WORKING_MODE_IS_STOP = OBLOQ_BOOL_TYPE_IS_TRUE
-    let nfcCallBack :Action;
+namespace NFC {
+    let nfcCallBack: Action;
     let reclen = 0;
     let recBuf = pins.createBuffer(25);
     let uid = pins.createBuffer(4);
@@ -201,64 +152,31 @@ namespace Obloq {
     password[3] = 0xFF;
     password[4] = 0xFF;
     password[5] = 0xFF;
-    //% advanced=true shim=Obloq::obloqSetTxBufferSize
-    function obloqSetTxBufferSize(size: number): void {
+    //% advanced=true shim=NFC::nfcSetTxBufferSize
+    function nfcSetTxBufferSize(size: number): void {
         return
     }
 
-    //% advanced=true shim=Obloq::obloqSetRxBufferSize
-    function obloqSetRxBufferSize(size: number): void {
+    //% advanced=true shim=NFC::nfcSetRxBufferSize
+    function nfcSetRxBufferSize(size: number): void {
         return
     }
 
-    //% advanced=true shim=Obloq::obloqEventOn
-    function obloqEventOn(): void {
+
+    //% advanced=true shim=NFC::nfcClearRxBuffer
+    function nfcClearRxBuffer(): void {
         return
     }
 
-    //% advanced=true shim=Obloq::obloqClearRxBuffer
-    function obloqClearRxBuffer(): void {
+    //% advanced=true shim=NFC::nfcClearTxBuffer
+    function nfcClearTxBuffer(): void {
         return
     }
 
-    //% advanced=true shim=Obloq::obloqClearTxBuffer
-    function obloqClearTxBuffer(): void {
-        return
-    }
 
-    //% advanced=true shim=Obloq::obloqforevers
-    function obloqforevers(a: Action): void {
-        return
-    }
-
-    function obloqWriteString(text: string): void {
-        serial.writeString(text)
-    }
-
-    //% advanced=true shim=Obloq::obloqRxBufferedSize
-    function obloqRxBufferedSize(): number {
+    //% advanced=true shim=NFC::nfcRxBufferedSize
+    function nfcRxBufferedSize(): number {
         return 1
-    }
-
-    function Obloq_serial_init(): void {
-        let item = OBLOQ_STR_TYPE_IS_NONE
-        //First send data through usb, avoid the first data scrambled.
-        obloqWriteString("123")
-        item = serial.readString()
-        item = serial.readString()
-        item = serial.readString()
-        serial.redirect(
-            OBLOQ_SERIAL_TX,
-            OBLOQ_SERIAL_RX,
-            BaudRate.BaudRate9600
-        )
-        obloqSetTxBufferSize(300)
-        obloqSetRxBufferSize(300)
-        obloqWriteString("\r")
-        item = serial.readString()
-        OBLOQ_SERIAL_INIT = OBLOQ_BOOL_TYPE_IS_TRUE
-        obloqClearRxBuffer()
-        obloqClearTxBuffer()
     }
 
     function wakeup(): void {
@@ -269,7 +187,7 @@ namespace Obloq {
         let wake = pins.createBufferFromArray(tempbuf);
         serial.writeBuffer(wake);
         basic.pause(100);
-        reclen = obloqRxBufferedSize();
+        reclen = nfcRxBufferedSize();
         if (reclen == 15) {
             recBuf = serial.readBuffer(15);
         }
@@ -301,7 +219,7 @@ namespace Obloq {
         cmdPassWord[20] = 0xff - (sum & 0xff)
         serial.writeBuffer(cmdPassWord);
         basic.pause(100);
-        reclen = obloqRxBufferedSize();
+        reclen = nfcRxBufferedSize();
         if (reclen == 16) {
             recBuf = serial.readBuffer(reclen);
             if ((checkDCS(16)) && (recBuf[12] == 0x41) && (recBuf[13] == 0x00))
@@ -315,14 +233,14 @@ namespace Obloq {
     //% blockId=get_NFC_card
     //% icon="\uf143" blockGap=8
     export function getCard(): boolean {
-        obloqSetRxBufferSize(100);
+        nfcSetRxBufferSize(100);
         wakeup();
         let tempbuf: number[] = []
         tempbuf = [0x00, 0x00, 0xFF, 0x04, 0xFC, 0xD4, 0x4A, 0x01, 0x00, 0xE1, 0x00]
         let cmdUID = pins.createBufferFromArray(tempbuf)
         serial.writeBuffer(cmdUID);
         basic.pause(100);
-        reclen = obloqRxBufferedSize();
+        reclen = nfcRxBufferedSize();
         if (reclen == 25) {
             recBuf = serial.readBuffer(25);
             for (let i = 0; i < 4; i++) {
@@ -384,7 +302,7 @@ namespace Obloq {
     //% blockId=get_UID
     //% blockGap=8
     export function getUID(): string {
-        obloqSetRxBufferSize(100);
+        nfcSetRxBufferSize(100);
         wakeup();
         let tempbuf: number[] = []
         let retbuf: number[] = []
@@ -392,7 +310,7 @@ namespace Obloq {
         let cmdUID = pins.createBufferFromArray(tempbuf)
         serial.writeBuffer(cmdUID);
         basic.pause(100);
-        reclen = obloqRxBufferedSize();
+        reclen = nfcRxBufferedSize();
         if (reclen == 25) {
             recBuf = serial.readBuffer(25);
             for (let i = 0; i < 4; i++) {
@@ -461,7 +379,7 @@ namespace Obloq {
         let tempbuf = pins.createBufferFromArray(cmdWrite)
         serial.writeBuffer(tempbuf);
         basic.pause(100);
-        reclen = obloqRxBufferedSize();
+        reclen = nfcRxBufferedSize();
         serial.readBuffer(reclen);
     }
 
@@ -479,9 +397,10 @@ namespace Obloq {
         blockdata[index - 1] = data;
         writeblock(blockNum, blockdata);
     }
-
+    //readNFCData(num)|%num=block_nfc_list
+    
     //% weight=79
-    //% blockId=read_nfc_data block="readNFCData(num)|%num=block_nfc_list"
+    //% blockId=read_nfc_data block="读取NFC传感器数据块 |%num=block_nfc_list | 所有数据"
     export function readNFCData(num: number): string {
         if (!passWordCheck(num, uid, password))
             return "read error!"
@@ -495,7 +414,7 @@ namespace Obloq {
         let tempbuf = pins.createBufferFromArray(cmdRead)
         serial.writeBuffer(tempbuf);
         basic.pause(100);
-        reclen = obloqRxBufferedSize();
+        reclen = nfcRxBufferedSize();
         if (reclen == 32) {
             recBuf = serial.readBuffer(reclen);
         } else {
@@ -514,7 +433,7 @@ namespace Obloq {
 
     //% weight=79
     //% blockId=read_nfc_data_one block="readNFCData|%blockNum=block_nfc_list|%byteNum=data_nfc_list"
-    export function readNFCDataOne(blockNum: number,byteNum:number): number {
+    export function readNFCDataOne(blockNum: number, byteNum: number): number {
         let ret = 0;
         readNFCData(blockNum);
         ret = blockdata[byteNum]

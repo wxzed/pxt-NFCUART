@@ -1,5 +1,5 @@
 {
-    "name": "NFC",
+    "name": "NFC_UART",
     "version": "1.0.3",
     "description": "Add Wi-Fi connectivity to micro:bit and start your IoT project in 5 minutes!",
     "license": "MIT",
@@ -14,8 +14,7 @@
         "_locales/zh-cn/NFC_UART-strings.json",
         "_locales/zh-tw/NFC_UART-strings.json"
     ],
-    "testFiles": [
-    ],
+    "testFiles": [],
     "public": true,
-    "installedVersion": "workspace:bc982c3f-e2d1-4029-5a99-1c6642c96a12"
+    "installedVersion": "workspace:822412bc-6976-4e42-a5ec-f84fe63b48ee"
 }
