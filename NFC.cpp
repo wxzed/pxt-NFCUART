@@ -1,6 +1,6 @@
 #include "pxt.h"
 using namespace pxt;
-namespace NFC_UART {
+namespace NFC {
 
     //%
     void nfcSetTxBufferSize(int size){
