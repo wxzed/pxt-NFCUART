@@ -1,6 +1,4 @@
 
-
-/*数据块下拉框*/
 enum DataBlockList {
     //% block="1"
     block_1 = 1,
@@ -99,7 +97,6 @@ enum DataBlockList {
 }
 
 
-/*数据块字节数下拉框*/
 enum byteNumList {
     //% block="1"
     data_1 = 1,
@@ -140,7 +137,7 @@ enum byteNumList {
  */
 //% weight=10 color=#008B00 icon="\uf143" block="NFC"
 namespace NFC {
-    let nfcCallBack: Action=null;
+    let nfcCallBack: Action = null;
     let reclen = 0;
     let recBuf = pins.createBuffer(25);
     let uid = pins.createBuffer(4);
@@ -384,7 +381,7 @@ namespace NFC {
     //% data.min=0 data.max=255
     //% block="NFC sensor data block :in|%blockNum=block_nfc_list| the %byteNum=data_nfc_list|byte write%writeIn"
     export function writeData(blockNum: number, index: number, data: number): void {
-        if (((blockNum + 1) % 3 == 0) || (blockNum > 63) || (blockNum < 0)){
+        if (((blockNum + 1) % 4 == 0) || (blockNum > 63) || (blockNum < 0)) {
             return;
         }
         if (data > 255)
@@ -433,13 +430,13 @@ namespace NFC {
     export function readNFCDataOne(blockNum: number, byteNum: number): number {
         let ret = 0;
         readNFCData(blockNum);
-        ret = blockdata[byteNum-1]
+        ret = blockdata[byteNum - 1]
         return ret;
     }
 
 
     basic.forever(() => {
-        if(nfcCallBack != null){
+        if (nfcCallBack != null) {
             if (getCard()) {
                 nfcCallBack();
             }
