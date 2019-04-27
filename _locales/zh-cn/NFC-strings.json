@@ -7,5 +7,5 @@
     "NFC.nfcEvent|block": "当检测到卡片的时候",
     "NFC.readNFCDataOne|block": "读取NFC传感器数据块|%blockNum=block_nfc_list 第|%byteNum=data_nfc_list",
     "NFC.checkUID|block": "检测到卡片UID|%str?",
-    "NFC.writeData|block": "NFC传感器数据块:|%blockNum = block_nfc_list |第 %byteNum=data_nfc_list|字节写入 %writeIn"
+    "NFC.writeData|block": "NFC传感器 数据块:|%blockNum = block_nfc_list |字节： %byteNum=data_nfc_list|写入 %writeIn"
 }

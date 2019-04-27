@@ -379,7 +379,7 @@ namespace NFC {
     //% weight=90
     //% blockId=write_nfc_data 
     //% data.min=0 data.max=255
-    //% block="NFC sensor data block :in|%blockNum=block_nfc_list| the %byteNum=data_nfc_list|byte write%writeIn"
+    //% block="NFC sensor data block :|%blockNum=block_nfc_list| byte: %byteNum=data_nfc_list|write%writeIn"
     export function writeData(blockNum: number, index: number, data: number): void {
         if (((blockNum + 1) % 4 == 0) || (blockNum > 63) || (blockNum < 0)) {
             return;

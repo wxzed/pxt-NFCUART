@@ -1,7 +1,7 @@
 {
     "name": "NFC",
-    "version": "1.0.3",
-    "description": "Add Wi-Fi connectivity to micro:bit and start your IoT project in 5 minutes!",
+    "version": "1.0.0",
+    "description": "",
     "license": "MIT",
     "dependencies": {
         "core": "*",
