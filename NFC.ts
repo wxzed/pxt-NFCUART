@@ -384,7 +384,7 @@ namespace NFC {
     //% data.min=0 data.max=255
     //% block="NFC sensor data block :in|%blockNum=block_nfc_list| the %byteNum=data_nfc_list|byte write%writeIn"
     export function writeData(blockNum: number, index: number, data: number): void {
-        if (((blockNum + 1) % 3 == 0) || (blockNum > 63) || (blockNum < 63)){
+        if (((blockNum + 1) % 3 == 0) || (blockNum > 63) || (blockNum < 0)){
             return;
         }
         if (data > 255)
@@ -433,7 +433,7 @@ namespace NFC {
     export function readNFCDataOne(blockNum: number, byteNum: number): number {
         let ret = 0;
         readNFCData(blockNum);
-        ret = blockdata[byteNum]
+        ret = blockdata[byteNum-1]
         return ret;
     }
 
